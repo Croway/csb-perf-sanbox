@@ -2,6 +2,9 @@
 name: csb-perf-regression-scenario
 http:
   host: http://localhost:8080
+agents:
+  agent-one:
+  agent-two:
 phases:
 - operator:
     # Running a fixed number of users during a fixed period of time
@@ -14,4 +17,4 @@ phases:
       scenario:
       - hello:
         - httpRequest:
-            GET: /hello
+            GET: /camel/hello

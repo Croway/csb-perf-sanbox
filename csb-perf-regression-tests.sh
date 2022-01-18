@@ -44,7 +44,7 @@ EOF
     # Build and run test in JVM mode, then native mode
     pushd "csb-versions-under-test/csb-perf-regression-sample-${csbVersion}" > /dev/null
     mkdir -p target > /dev/null
-    mvn integration-test > target/jvm-logs.txt
+    mvn integration-test -Pperf-test > target/jvm-logs.txt
 
 	# Print the report line for this version
     NB_REQS=$(grep -Po "RunMojo] Requests/sec: ([0-9.,]+)" "target/jvm-logs.txt" | sed -r 's/RunMojo] Requests\/sec: ([0-9.,]+)/\1/g')
