@@ -10,7 +10,7 @@ public class PerfRegressionSampleRouteBuilder extends RouteBuilder {
 	public void configure() throws Exception {
 		restConfiguration().component("servlet").host("localhost").port(8080);
 
-		rest().get("hello").to("direct:hello");
+		rest().get("hello").produces("text/html").to("direct:hello");
 
 		from("direct:hello")
 				.setBody(constant("Hello from Camel Spring Boot performance regression sample"));
