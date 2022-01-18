@@ -93,86 +93,97 @@
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
             </plugin>
-            <!-- display active profile in pre-integration-test phase -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-help-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>show-profiles</id>
-                        <phase>pre-integration-test</phase>
-                        <goals>
-                            <goal>active-profiles</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <!-- Start the quarkus app under test async, will be killed when maven stops-->
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <phase>pre-integration-test</phase>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <async>true</async>
-                </configuration>
-            </plugin>
-            <plugin>
-                <!-- Wait the quarkus app under test to be listening on port 8080 -->
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <version>3.0.0</version>
-                <executions>
-                    <execution>
-                        <id>wait-for-sb-app-to-listen-on-port</id>
-                        <phase>integration-test</phase>
-                        <configuration>
-                            <target>
-                                <waitfor maxwait="10" maxwaitunit="second">
-                                    <socket server="localhost"
-                                        port="8080" />
-                                </waitfor>
-                            </target>
-                        </configuration>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <configuration>
-                    <executable>java</executable>
-                    <arguments>
-                        <argument>-jar</argument>
-                        <argument>target/csb-perf-regression-sample.jar</argument>
-                    </arguments>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>io.hyperfoil</groupId>
-                <artifactId>hyperfoil-maven-plugin</artifactId>
-                <version>0.19-SNAPSHOT</version>
-                <configuration>
-                    <yaml>csb-perf-regression-scenario.hf.yaml</yaml>
-                    <percentiles>true</percentiles>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>perf-test</id>
+            
+            <build>
+                <plugins>
+                    <!-- display active profile in pre-integration-test phase -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-help-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>show-profiles</id>
+                                <phase>pre-integration-test</phase>
+                                <goals>
+                                    <goal>active-profiles</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <!-- Start the quarkus app under test async, will be killed when maven stops-->
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <phase>pre-integration-test</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <async>true</async>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <!-- Wait the quarkus app under test to be listening on port 8080 -->
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <version>3.0.0</version>
+                        <executions>
+                            <execution>
+                                <id>wait-for-sb-app-to-listen-on-port</id>
+                                <phase>integration-test</phase>
+                                <configuration>
+                                    <target>
+                                        <waitfor maxwait="10" maxwaitunit="second">
+                                            <socket server="localhost"
+                                                port="8080" />
+                                        </waitfor>
+                                    </target>
+                                </configuration>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <configuration>
+                            <executable>java</executable>
+                            <arguments>
+                                <argument>-jar</argument>
+                                <argument>target/csb-perf-regression-sample.jar</argument>
+                            </arguments>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>io.hyperfoil</groupId>
+                        <artifactId>hyperfoil-maven-plugin</artifactId>
+                        <version>0.19-SNAPSHOT</version>
+                        <configuration>
+                            <yaml>csb-perf-regression-scenario.hf.yaml</yaml>
+                            <percentiles>true</percentiles>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
