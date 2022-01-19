@@ -78,11 +78,11 @@
             <groupId>io.hawt</groupId>
             <artifactId>hawtio-springboot</artifactId>
             <version>${hawtio.springboot.version}</version>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>org.apache.camel.springboot</groupId>
             <artifactId>camel-jfr-starter</artifactId>
-        </dependency>-->
+        </dependency>
     </dependencies>
     <build>
         <finalName>csb-perf-regression-sample</finalName>
@@ -115,7 +115,7 @@
                     <executable>java</executable>
                     <arguments>
                         <argument>-XX:+FlightRecorder</argument>
-                        <argument>-XX:StartFlightRecording=filename=flight-recording.jfr</argument>
+                        <argument>-XX:StartFlightRecording=filename=${project.artifactId}-${camel-spring-boot-bom.version}.jfr</argument>
                         <argument>-jar</argument>
                         <argument>target/csb-perf-regression-sample.jar</argument>
                     </arguments>
@@ -172,7 +172,7 @@
                                 <configuration>
                                     <target>
                                         <waitfor maxwait="1" maxwaitunit="minute" checkevery="500">
-                                            <http url="https://localhost:8080/camel/hello"/>
+                                            <socket server="localhost" port="8080"/>
                                         </waitfor>
                                     </target>
                                 </configuration>
@@ -181,19 +181,6 @@
                                 </goals>
                             </execution>
                         </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>exec-maven-plugin</artifactId>
-                        <configuration>
-                            <executable>java</executable>
-                            <arguments>
-                                <argument>-XX:+FlightRecorder</argument>
-                                <argument>-XX:StartFlightRecording=filename=flight-recording.jfr</argument>
-                                <argument>-jar</argument>
-                                <argument>target/csb-perf-regression-sample.jar</argument>
-                            </arguments>
-                        </configuration>
                     </plugin>
                     <plugin>
                         <groupId>io.hyperfoil</groupId>
